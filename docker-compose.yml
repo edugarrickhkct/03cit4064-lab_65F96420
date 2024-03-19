@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+    host-a:
+        image: edugarrick/centos-8-python
+        container_name: host-a
+        tty: true
+        cap_add:
+                - ALL
+        privileged: true
+        sysctls:
+                - net.ipv4.tcp_syncookies=0
+    host-b:
+        image: edugarrick/centos-8-python
+        container_name: host-b
+        tty: true
+        cap_add:
+                - ALL
+        privileged: true
+        sysctls:
+                - net.ipv4.tcp_syncookies=0
+    attacker:
+        image: edugarrick/kali-desktop
+        container_name: attacker
+        tty: true
+        cap_add:
+            - ALL
+        privileged: true
+        volumes:
+            - ./src:/src
+        ports:
+            - "9020:8080"
+            - "9021:5900"
+    kali:
+        container_name: kali
+        image: lukaszlach/kali-desktop:xfce-top10
+        privileged: true
+        ports:
+            - "6080:6080"
+
+
